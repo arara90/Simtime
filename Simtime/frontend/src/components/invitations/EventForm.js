@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getEvent, addEvent } from "../../actions/events";
+import { addEvent } from "../../actions/events";
 import PropTypes from "prop-types";
 
 import produce from "immer";
+import { getEvent } from "../../api/event";
 
 export class EventForm extends Component {
   initialEvent = {
@@ -19,6 +20,7 @@ export class EventForm extends Component {
   //functions
   onChange = e => this.setState({ [e.target.name]: e.target.value });
   handleSubmit = (host, status) => {
+    console.log("handle submit");
     return e => {
       e.preventDefault();
       const { event_name, event_at, status, message } = this.state;
@@ -34,16 +36,23 @@ export class EventForm extends Component {
   componentDidMount() {
     if (this.props.isEdit) {
       console.log("componentDidMount ", this.props);
-      this.props.getEvent(this.props.eventId);
+      this.fetchEvent();
     }
   }
+  fetchEvent = async () => {
+    const result = await getEvent(this.props.eventId, this.props.auth.token);
+    console.log(result);
+    this.setState({
+      event_name: result.event_name
+    });
+  };
 
   render() {
     const { event_name, event_at, message } = this.state;
     const { user } = this.props.auth;
     return (
       <div className="card card-body mt-4 mb-4">
-        <form onSubmit={this.handleSubmit(user.id, status)}>
+        <form onSubmit={e => this.handleSubmit(user.id, status)}>
           <div className="form-group">
             <label>Host </label>
             <input
@@ -155,10 +164,13 @@ export class EventForm extends Component {
   };
 }
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-  event: state.events.selectedEvent
-});
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    auth: state.auth,
+    event: state.events.selectedEvent
+  };
+};
 
 //후에 친구 목록 getFriends 만들어야함!
 export default connect(mapStateToProps, { getEvent, addEvent })(EventForm);

@@ -1,5 +1,8 @@
 // load babel load
 module.exports = {
+  entry: {
+    main: ["@babel/polyfill", "./Simtime/frontend/src/index.js"]
+  },
   module: {
     rules: [
       {
