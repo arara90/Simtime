@@ -48,6 +48,7 @@ export class EventForm extends Component {
   handleSubmit = (host, status) => {
     return e => {
       e.preventDefault();
+
       const { event_name, event_at, status, message } = this.state;
 
       const event = {

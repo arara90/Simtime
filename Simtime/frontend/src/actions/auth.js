@@ -11,10 +11,10 @@ import {
   REGISTER_FAIL
 } from "./types";
 
-//Setup config with token
 export const tokenConfig = getState => {
+  console.log(getState());
   const token = getState().auth.token;
-  console.log(token);
+
   const config = {
     headers: {
       "Content-Type": "application/json"
@@ -23,7 +23,7 @@ export const tokenConfig = getState => {
 
   // If token, add to headers config
   if (token) {
-    config.headers["Authorization"] = `Token ${token}`;
+    config.headers["Authorization"] = `JWT ${token}`;
   }
 
   return config;
@@ -36,7 +36,7 @@ export const loadUser = () => (dispatch, getState) => {
 
   //
   axios
-    .get("/api/auth/user", tokenConfig(getState))
+    .get("/api/auth/user/", tokenConfig(getState))
     .then(res => {
       dispatch({
         type: USER_LOADED,
@@ -53,6 +53,7 @@ export const loadUser = () => (dispatch, getState) => {
 
 // LOGIN USER
 export const login = (username, password) => dispatch => {
+  console.log("done1");
   const config = {
     // Haders
     headers: {
@@ -61,9 +62,12 @@ export const login = (username, password) => dispatch => {
   };
   // Request Body
   const body = JSON.stringify({ username, password });
+
   axios
+    // .post("/api/token/obtain/", body, config)
     .post("/api/auth/login", body, config)
     .then(res => {
+      console.log("done");
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
