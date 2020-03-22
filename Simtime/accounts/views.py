@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import status, permissions
+from rest_framework import status, permissions, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -94,3 +94,13 @@ class UserView(APIView):
 #         """
 #         usernames = [user.username for user in User.objects.all()]
 #         return Response(usernames)
+
+class UserAPI(generics.RetrieveAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
