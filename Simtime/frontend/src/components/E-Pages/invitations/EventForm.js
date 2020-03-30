@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addEvent, getEvent } from "../../actions/events";
+import { addEvent, getEvent } from "../../../actions/events";
 import PropTypes from "prop-types";
 
 export class EventForm extends Component {

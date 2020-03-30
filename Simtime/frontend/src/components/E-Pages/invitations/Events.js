@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { getEvents, deleteEvent, getEvent } from "../../actions/events";
+import { getEvents, deleteEvent, getEvent } from "../../../actions/events";
 import { connect } from "react-redux";
 // import { openModal, closeModal } from "../../actions/modal";
-import ModalPortal from "../layout//ModalPortal";
+import ModalPortal from "../layout/ModalPortal";
 import { EventForm } from "./EventForm";
 
-import Modal from "../layout/Modal";
+import Modal from "../../layout/Modal";
 
 const EventModal = Modal;
 

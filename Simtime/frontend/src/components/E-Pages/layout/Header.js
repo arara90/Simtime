@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 
-import { logout } from "../../actions/auth";
+import { logout } from "../../../actions/auth";
+
+const HeaderNav = styled.nav``;
 
 export class Header extends Component {
   static propType = {
@@ -33,6 +36,7 @@ export class Header extends Component {
         <span className="navbar-text mr-3">
           <strong>{user ? `Welcome ${user.username} ` : ""}</strong>
         </span>
+
         <li className="nav-item">
           <button
             onClick={this.props.logout}
