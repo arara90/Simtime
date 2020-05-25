@@ -51,10 +51,12 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'rest_framework',
+    # 'storages',
     'frontend',
     'invitations',
     # 'knox',
     'accounts',
+    'files',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -103,7 +105,7 @@ ROOT_URLCONF = 'Simtime.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'files', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -164,13 +166,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'ko-kr'
-
 TIME_ZONE = 'Asia/Seoul'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = False
 
 
@@ -182,5 +180,23 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'Simtime', 'assets')
 ]
 
-# MEDIA_URL='/media/'
-# MEDIA_ROOT=os.path.join(BASE_DIR, 'media/')
+# USE_S3 = 'TRUE'
+
+# if USE_S3:
+#     # aws settings
+#     AWS_ACCESS_KEY_ID = get_secret('AWS_ACCESS_KEY_ID')
+#     AWS_SECRET_ACCESS_KEY = get_secret('AWS_SECRET_ACCESS_KEY')
+#     AWS_STORAGE_BUCKET_NAME = get_secret('AWS_STORAGE_BUCKET_NAME')
+#     AWS_REGION = get_secret('AWS_REGION')
+
+#     AWS_DEFAULT_ACL = None
+#     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com'
+#     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+
+#     #DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage'
+#     # 다음에 만들 MediaStorage라는 클래스를 통해 파일 저장소를 사용하겠다' 라는 의미
+
+#     # s3 public media settings
+#     PUBLIC_MEDIA_LOCATION = 'media'
+#     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+#     DEFAULT_FILE_STORAGE = 'hello_django.storage_backends.PublicMediaStorage'
