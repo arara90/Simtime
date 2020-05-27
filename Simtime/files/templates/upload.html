@@ -2,13 +2,13 @@
 <div class="row">
   <div class="col-6 offset-3">
     <div class="item-loading-queue"></div>
-    <form class="cfeproj-upload-form">
-      <input
-        class="cfeproj-upload-file form-control"
-        type="file"
-        accept="audio/*,video/*,image/*"
-        multiple="multiple"
-      />
+    <form
+      action="{% url 'upload-complete' %}"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <input type="file" accept="audio/*,video/*,image/*" multiple="multiple" />
+      <button type="submit">upload</button>
     </form>
   </div>
 </div>
