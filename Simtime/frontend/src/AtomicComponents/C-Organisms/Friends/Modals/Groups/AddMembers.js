@@ -40,13 +40,15 @@ function AddMembers(props) {
   const { friends, selectedGroup } = props;
 
   const groupMembers = selectedGroup.members.reduce((acc, member) => ({...acc,[member.relationship.id]: member.relationship.id,}),{});
+  // index friends 아이다 만듬
+
   const nonMembers = friends.filter((friend) => !groupMembers[friend.id]);  //검색대상-현재 그룹에 속하지 않은 친구들
   console.log('group members ' + groupMembers)
   //검색결과
   const [candidates, setCandidates] = useState([
     ...new Set(
       nonMembers.map((friend) => {
-        return { ...friend.friend, id: friend.id };
+        return { ...friend.friend, id: friend.id }; //id=relationshipId
       })
     ),
   ]);
@@ -59,14 +61,16 @@ function AddMembers(props) {
   // ]) 
   const [selectedFriends, setSelectedFriends] = useState([]);
 
+
   const clickEvent = async (e) => {
     e.preventDefault();
     var groupId = props.selectedGroup.group.id;
     try {
-      var payload = selectedFriends.map((friendId) => {
-        return { relationship: friendId, group: groupId };
+      var payload = selectedFriends.map((relationshipId) => {
+        return { relationship: relationshipId, group: groupId };
       });
       var res = await props.addToGroup(payload)
+  
       var newCandidates = candidates.filter((candidate) => !selectedFriends.includes(candidate.id))
       console.log('newCandidates', newCandidates)
       setCandidates(newCandidates);   
@@ -76,11 +80,17 @@ function AddMembers(props) {
     }
   };
 
+
+  const fn = (res) => {
+    console.log("fn:" ,res);
+    setCandidates(res);
+  }
+  console.log("cadddddddddddddndidates" , candidates);
   return (
     <Wrap>
       <SearchWrap>
         <SearchBar
-          search={setCandidates}
+          search={fn}
           candidates={candidates}
         />
       </SearchWrap>

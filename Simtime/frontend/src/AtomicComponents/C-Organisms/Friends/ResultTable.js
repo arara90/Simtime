@@ -35,6 +35,7 @@ function ResultTable(props) {
   };
 
   const renderRows = (datas = []) => {
+    console.log("resultable render rows", datas)
     return datas.map((data, index) => {
       return (
         <Row
@@ -72,7 +73,7 @@ function ResultTable(props) {
   );
 }
 
-export default React.memo(ResultTable);
+export default ResultTable;
 
 ResultTable.propTypes = {
   addButton: PropTypes.bool,
