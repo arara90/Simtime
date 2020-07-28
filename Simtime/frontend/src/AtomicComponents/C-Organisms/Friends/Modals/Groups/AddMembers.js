@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
@@ -39,32 +39,10 @@ const MyItem = styled(SelectedItem)`
 function AddMembers(props) {
   const { friends, selectedGroup } = props;
 
-  // const setStateAsync = (state) => {
-  //   return new Promise((resolve) => {
-  //     this.setState(state, resolve)
-  //   });
-  // }
-
-  // handleChange = (e) => {
-  //   return this.setStateAsync({[e.target.name]: e.target.value})
-  // }
-
-  const flatGroupMembers = (members) => {
-    return members.reduce(
-      (acc, member) => ({
-        ...acc,
-        [member.relationship.id]: member.relationship.id,
-      }),
-      {}
-    );
-  };
-  const [groupMembers, setGroupMembers] = useState(
-    flatGroupMembers(selectedGroup.members)
-  );
-  const [nonMembers, setNonMembers] = useState(
-    friends.filter((friend) => !groupMembers[friend.id])
-  );
-
+  const groupMembers = selectedGroup.members.reduce((acc, member) => ({...acc,[member.relationship.id]: member.relationship.id,}),{});
+  const nonMembers = friends.filter((friend) => !groupMembers[friend.id]);  //검색대상-현재 그룹에 속하지 않은 친구들
+  console.log('group members ' + groupMembers)
+  //검색결과
   const [candidates, setCandidates] = useState([
     ...new Set(
       nonMembers.map((friend) => {
@@ -72,30 +50,27 @@ function AddMembers(props) {
       })
     ),
   ]);
+  // const [nonMembers, setNonMembers] = useState([
+  //   ...new Set(
+  //     anonMembers.map((friend) => {
+  //       return { ...friend.friend, id: friend.id };
+  //     })
+  //   ),
+  // ]) 
   const [selectedFriends, setSelectedFriends] = useState([]);
 
   const clickEvent = async (e) => {
     e.preventDefault();
     var groupId = props.selectedGroup.group.id;
     try {
-      var data = selectedFriends.map((friend) => {
-        return { relationship: friend, group: groupId };
+      var payload = selectedFriends.map((friendId) => {
+        return { relationship: friendId, group: groupId };
       });
+      var res = await props.addToGroup(payload)
+      var newCandidates = candidates.filter((candidate) => !selectedFriends.includes(candidate.id))
+      console.log('newCandidates', newCandidates)
+      setCandidates(newCandidates);   
 
-      var res = await props.addToGroup(data);
-      console.log("res", res);
-
-      setGroupMembers(flatGroupMembers(selectedGroup.members));
-      setNonMembers(friends.filter((friend) => !groupMembers[friend.id]));
-      setCandidates([
-        ...new Set(
-          nonMembers.map((friend) => {
-            return { ...friend.friend, id: friend.id };
-          })
-        ),
-      ]);
-
-      console.log("dd");
     } catch (err) {
       console.log("addToGroupError", err);
     }
@@ -105,8 +80,8 @@ function AddMembers(props) {
     <Wrap>
       <SearchWrap>
         <SearchBar
-          search={(res) => setCandidates(res)}
-          candidates={nonMembers}
+          search={setCandidates}
+          candidates={candidates}
         />
       </SearchWrap>
       <ResultWrap>
@@ -115,9 +90,7 @@ function AddMembers(props) {
           datas={candidates}
           width="100%"
           rowNum={5}
-          selectHandler={(res) => {
-            setSelectedFriends(res);
-          }}
+          selectHandler={setSelectedFriends}
         />
       </ResultWrap>
 

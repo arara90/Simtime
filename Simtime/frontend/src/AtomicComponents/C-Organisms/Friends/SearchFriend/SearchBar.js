@@ -43,9 +43,6 @@ function SearchBar(props) {
     candidates,
   } = props;
 
-  const [resData, setResData] = useState(
-    candidates.length == 0 ? friends : candidates
-  );
 
   const [field, setField] = useState("Username");
 
@@ -58,9 +55,8 @@ function SearchBar(props) {
   };
 
   const searchHandler = async (keyword) => {
-    if (newFriends) {
-      var res = await searchUsers(field, keyword);
-    } else {
+    if (newFriends) var res = await searchUsers(field, keyword);
+    else {
       var map_field = {
         Username: "username",
         "E-mail": "email",
@@ -68,40 +64,35 @@ function SearchBar(props) {
       };
 
       var indexField = map_field[field];
-      var res = candidates.reduce((acc, candidate) => {
-        if (candidate.friend[indexField].includes(keyword)) {
-          acc.push({ ...candidate.friend, id: candidate.id });
+      var res = candidates.reduce((acc, data) => {
+        if (data[indexField].includes(keyword)) {
+          acc.push(data);
         }
         return acc;
       }, []);
-      console.log(res);
     }
     search(res);
   };
 
   return (
-    <Fragment>
       <SearchWrap {...props}>
         <StyledSelectBox
           options={["Username", "E-mail", "Phone"]}
           defaultOption="Username"
           width="102px"
           ref={selectRef}
-          handleOptionChange={(option) => {
-            handleOptionChange(option);
-          }}
+          handleOptionChange={handleOptionChange}
         />
+
         <StyledSearch
           width="auto"
           desc="Find a friend"
           height="25px"
           ref={searchRef}
-          searchHandler={(keyword) => {
-            searchHandler(keyword);
-          }}
+          searchHandler={searchHandler}
+          onlyEnter={newFriends ? true : false}
         />
       </SearchWrap>
-    </Fragment>
   );
 }
 

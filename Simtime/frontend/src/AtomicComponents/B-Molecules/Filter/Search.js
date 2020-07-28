@@ -54,7 +54,10 @@ function Search(props) {
     Inputref,
     searchHandler,
     changeHandler,
+    onlyEnter
   } = props;
+
+
   return (
     <Wrap {...props}>
       <MyInput
@@ -63,7 +66,7 @@ function Search(props) {
         desc={desc}
         height="24px"
         enterHandler={searchHandler}
-        changeHandler={searchHandler}
+        changeHandler={onlyEnter? ()=>{} : searchHandler}
       ></MyInput>
       <Icon size={height} />
     </Wrap>
