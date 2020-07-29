@@ -17,6 +17,7 @@ const ImageCard = styled(UserCardForList)`
 function ResultTable(props) {
   //UI용
   const [selectionFilter, setSelectionFilter] = useState([]);
+  console.log("ResultTable", props.datas);
 
   const handleClick = (e, id) => {
     e.preventDefault();
@@ -35,7 +36,8 @@ function ResultTable(props) {
   };
 
   const renderRows = (datas = []) => {
-    console.log("resultable render rows", datas)
+    console.log("resultable render rows", datas);
+
     return datas.map((data, index) => {
       return (
         <Row
@@ -65,8 +67,8 @@ function ResultTable(props) {
       titleColor={props.titleColor}
       width="100%"
       rowNum={props.rowNum}
-      handleAddBtnClick ={props.handleAddBtnClick}
-      addButton={props.addButton}      
+      handleAddBtnClick={props.handleAddBtnClick}
+      addButton={props.addButton}
     >
       {props.datas.length == 0 ? renderDefaultRow() : renderRows(props.datas)}
     </Table>

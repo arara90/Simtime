@@ -64,8 +64,8 @@ function InputWrap(props) {
 
   const handleChange = useCallback((e) => {
     e.stopPropagation();
-    changeHandler(e.target.value);
     setMyValue(e.target.value);
+    changeHandler(e.target.value);
   }, []);
 
   const handleKeyUp = useCallback((e) => {

@@ -67,23 +67,21 @@ function EditMembers(props) {
     },
   ];
 
-  const [users, setUsers] = useState([]);
   const [tab, setTab] = useState(buttons[0].content);
-  const [selectedMembers, setselectedMembers] = useState([]);
 
-  const friends = props.selectedGroup.members.reduce(
-    (acc, item) => [
-      ...acc,
-      {
-        id: item.RGmapId,
-        relationshipId: item.relationship.id, //relationshipid
-        friendId: item.relationship.friend.id,
-        username: item.relationship.friend.username,
-        profile_image: item.relationship.friend.profile_image,
-      },
-    ],
-    []
-  );
+  // const friends = props.selectedGroup.members.reduce(
+  //   (acc, item) => [
+  //     ...acc,
+  //     {
+  //       id: item.RGmapId,
+  //       relationshipId: item.relationship.id, //relationshipid
+  //       friendId: item.relationship.friend.id,
+  //       username: item.relationship.friend.username,
+  //       profile_image: item.relationship.friend.profile_image,
+  //     },
+  //   ],
+  //   []
+  // );
 
   return (
     <BasicModal title="Edit Group">
@@ -103,14 +101,16 @@ function EditMembers(props) {
               }
             />
           </GroupImage>
-          <GroupName type="h3">{props.selectedGroup.group.groupname}</GroupName>
+          {/* <GroupName type="h3">{props.selectedGroup.group.groupname}</GroupName> */}
+          <GroupName>helo</GroupName>
         </Group>
         <Table
           button={tab != "Members"}
           buttons={buttons}
           changeHandler={(tab) => setTab(tab)}
         >
-          {tab == "Members" ? <MemberList datas={friends} /> : <AddMembers />}
+          {/* {tab == "Members" ? <MemberList datas={friends} /> : <AddMembers />} */}
+          <AddMembers />
         </Table>
       </Wrap>
     </BasicModal>
@@ -119,7 +119,7 @@ function EditMembers(props) {
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
-  selectedGroup: state.groups.selectedGroup,
+  // selectedGroup: state.groups.selectedGroup,
 });
 
 export default connect(mapStateToProps, { deleteMemebers })(EditMembers);

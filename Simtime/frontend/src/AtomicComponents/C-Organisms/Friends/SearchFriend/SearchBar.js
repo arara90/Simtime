@@ -41,59 +41,39 @@ function SearchBar(props) {
     newFriends,
     friends,
     candidates,
+    options,
+    dafaultOption,
+    desc,
+    searchHandler,
   } = props;
-
-
-  const [field, setField] = useState("Username");
 
   const selectRef = createRef();
   const searchRef = createRef();
 
   const handleOptionChange = (option) => {
-    setField(option);
+    props.handleOptionChange(option);
     searchRef.current.focus();
   };
 
-  const searchHandler = async (keyword) => {
-    if (newFriends) var res = await searchUsers(field, keyword);
-    else {
-      console.log("searchHandler", candidates)
-      var map_field = {
-        Username: "username",
-        "E-mail": "email",
-        Phone: "phone",
-      };
-
-      var indexField = map_field[field];
-      var res = candidates.reduce((acc, data) => {
-        if (data[indexField].includes(keyword)) {
-          acc.push(data);
-        }
-        return acc;
-      }, []);
-    }
-    search(res);
-  };
-
   return (
-      <SearchWrap {...props}>
-        <StyledSelectBox
-          options={["Username", "E-mail", "Phone"]}
-          defaultOption="Username"
-          width="102px"
-          ref={selectRef}
-          handleOptionChange={handleOptionChange}
-        />
+    <SearchWrap {...props}>
+      <StyledSelectBox
+        options={options}
+        defaultOption={dafaultOption}
+        width="102px"
+        ref={selectRef}
+        handleOptionChange={handleOptionChange}
+      />
 
-        <StyledSearch
-          width="auto"
-          desc="Find a friend"
-          height="25px"
-          ref={searchRef}
-          searchHandler={searchHandler}
-          onlyEnter={newFriends ? true : false}
-        />
-      </SearchWrap>
+      <StyledSearch
+        width="auto"
+        desc={desc}
+        height="25px"
+        ref={searchRef}
+        searchHandler={searchHandler}
+        onlyEnter={newFriends ? true : false}
+      />
+    </SearchWrap>
   );
 }
 
@@ -108,7 +88,6 @@ SearchBar.propTypes = {
   height: PropTypes.string,
   width: PropTypes.string,
   setResult: PropTypes.func,
-  candidates: PropTypes.array,
 };
 
 SearchBar.defaultProps = {
@@ -117,5 +96,4 @@ SearchBar.defaultProps = {
   setResult: (res) => {
     console.log("SearchBar - Default setResult : ", res);
   },
-  candidates: [],
 };
